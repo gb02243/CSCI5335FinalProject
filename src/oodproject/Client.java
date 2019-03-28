@@ -187,8 +187,6 @@ public class Client extends javax.swing.JFrame {
 
     private void connectAction(){
         conninfo.dispose();
-        System.out.println("Address set to: "+Server_Address);
-        System.out.println("Username set to: "+Username);
     }
     
     private void sendMessage(){
