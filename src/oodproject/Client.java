@@ -18,9 +18,9 @@ public class Client extends javax.swing.JFrame {
     /**
      * Creates new form Server
      */
-    static Socket s;
-    static DataInputStream din;
-    static DataOutputStream dout;
+    private static Socket s;
+    private static DataInputStream din;
+    private static DataOutputStream dout;
     public Client() {
         initComponents();
     }

@@ -20,10 +20,10 @@ public class Server extends javax.swing.JFrame {
      * Creates new form Server
      */
     
-    static ServerSocket ss;
-    static Socket s;
-    static DataInputStream din;
-    static DataOutputStream dout;
+    private static ServerSocket ss;
+    private static Socket s;
+    private static DataInputStream din;
+    private static DataOutputStream dout;
     
     public Server() {
         initComponents();
