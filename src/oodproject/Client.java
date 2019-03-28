@@ -93,19 +93,26 @@ public class Client extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void message_sendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_message_sendActionPerformed
-        try {
-            String message_out = "";
-            
-            message_out = message_text.getText().trim();
-            dout.writeUTF(message_out);
-            chat_display.setText(chat_display.getText().trim()+"\nYou: "+message_out);
-        } catch (Exception e) {
-        }
+        sendMessage();
     }//GEN-LAST:event_message_sendActionPerformed
 
     private void message_textActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_message_textActionPerformed
-        // TODO add your handling code here:
+        sendMessage();
     }//GEN-LAST:event_message_textActionPerformed
+
+    private void sendMessage(){
+        try {
+            String message_out = "";
+
+            message_out = message_text.getText().trim();
+            dout.writeUTF(message_out);
+            if(!message_out.equals("exit") && !message_out.equals("")){
+                chat_display.setText(chat_display.getText().trim()+"\nYou: "+message_out);
+                message_text.setText("");
+            }
+        } catch (Exception e) {
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -155,7 +162,9 @@ public class Client extends javax.swing.JFrame {
             String message_in = "";
             while(!message_in.equals("exit")){
                 message_in = din.readUTF();
-                chat_display.setText(chat_display.getText().trim()+"\nServer: "+message_in);
+                if(!message_in.equals("")){
+                    chat_display.setText(chat_display.getText().trim()+"\nServer: "+message_in);
+                }
             }
         } catch (Exception e) {
         }
