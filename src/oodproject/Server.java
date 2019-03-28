@@ -24,6 +24,7 @@ public class Server extends javax.swing.JFrame {
     private static Socket s;
     private static DataInputStream din;
     private static DataOutputStream dout;
+    private static Server server;
     
     public Server() {
         initComponents();
@@ -147,7 +148,9 @@ public class Server extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Server().setVisible(true);
+                server = new Server();
+                server.setLocationRelativeTo(null);
+                server.setVisible(true);
             }
         });
         

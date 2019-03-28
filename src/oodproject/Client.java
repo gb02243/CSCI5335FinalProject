@@ -21,6 +21,7 @@ public class Client extends javax.swing.JFrame {
     private static Socket s;
     private static DataInputStream din;
     private static DataOutputStream dout;
+    private static Client client;
     public Client() {
         initComponents();
     }
@@ -147,8 +148,9 @@ public class Client extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Client().setVisible(true);
-//                new ConnectionInfo().setVisible(true);
+                client = new Client();
+                client.setLocationRelativeTo(null);
+                client.setVisible(true);
             }
         });
         
