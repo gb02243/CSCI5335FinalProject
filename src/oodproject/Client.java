@@ -22,6 +22,9 @@ public class Client extends javax.swing.JFrame {
     private static DataInputStream din;
     private static DataOutputStream dout;
     private static Client client;
+    private static String Server_Address;
+    private static String Username;
+    
     public Client() {
         initComponents();
     }
@@ -35,10 +38,77 @@ public class Client extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        conninfo = new javax.swing.JDialog();
+        jLabel1 = new javax.swing.JLabel();
+        address_text = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        user_text = new javax.swing.JTextField();
+        connect_btn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         chat_display = new javax.swing.JTextArea();
         message_text = new javax.swing.JTextField();
         message_send = new javax.swing.JButton();
+
+        conninfo.setTitle("Connection Info");
+        conninfo.setPreferredSize(new java.awt.Dimension(400, 200));
+        conninfo.setSize(new java.awt.Dimension(400, 200));
+
+        jLabel1.setText("Enter the Server Address:");
+
+        address_text.setText("127.0.0.1");
+        address_text.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                address_textActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Username:");
+
+        user_text.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                user_textActionPerformed(evt);
+            }
+        });
+
+        connect_btn.setText("Connect");
+        connect_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                connect_btnActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout conninfoLayout = new javax.swing.GroupLayout(conninfo.getContentPane());
+        conninfo.getContentPane().setLayout(conninfoLayout);
+        conninfoLayout.setHorizontalGroup(
+            conninfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(conninfoLayout.createSequentialGroup()
+                .addGap(164, 164, 164)
+                .addComponent(jLabel2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, conninfoLayout.createSequentialGroup()
+                .addContainerGap(123, Short.MAX_VALUE)
+                .addGroup(conninfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(address_text)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(user_text)
+                    .addComponent(connect_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(120, 120, 120))
+        );
+        conninfoLayout.setVerticalGroup(
+            conninfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(conninfoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(address_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(user_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
+                .addComponent(connect_btn)
+                .addContainerGap())
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Client");
@@ -101,6 +171,26 @@ public class Client extends javax.swing.JFrame {
         sendMessage();
     }//GEN-LAST:event_message_textActionPerformed
 
+    private void address_textActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_address_textActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_address_textActionPerformed
+
+    private void user_textActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_user_textActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_user_textActionPerformed
+
+    private void connect_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connect_btnActionPerformed
+        Server_Address = address_text.getText().trim();
+        Username = user_text.getText().trim();
+        connectAction();
+    }//GEN-LAST:event_connect_btnActionPerformed
+
+    private void connectAction(){
+        conninfo.dispose();
+        System.out.println("Address set to: "+Server_Address);
+        System.out.println("Username set to: "+Username);
+    }
+    
     private void sendMessage(){
         try {
             String message_out = "";
@@ -151,12 +241,14 @@ public class Client extends javax.swing.JFrame {
                 client = new Client();
                 client.setLocationRelativeTo(null);
                 client.setVisible(true);
+                conninfo.setLocationRelativeTo(null);
+                conninfo.setVisible(true);
             }
         });
         
-        String serveraddress = "127.0.0.1";
         try {
-            s = new Socket(serveraddress,1201);
+            s = new Socket(Server_Address,1201);
+            System.out.println("Connecting to: " + Server_Address);
             
             din = new DataInputStream(s.getInputStream());
             dout = new DataOutputStream(s.getOutputStream());
@@ -174,9 +266,15 @@ public class Client extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField address_text;
     private static javax.swing.JTextArea chat_display;
+    private javax.swing.JButton connect_btn;
+    private static javax.swing.JDialog conninfo;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton message_send;
     private javax.swing.JTextField message_text;
+    private javax.swing.JTextField user_text;
     // End of variables declaration//GEN-END:variables
 }
