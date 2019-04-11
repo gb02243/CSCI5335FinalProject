@@ -13,6 +13,7 @@ public class ClientHandler extends Thread {
     private final ClientHandler[] threads;
     private int clientCount;
     private ChatStatus joinMessage = new JoinChat();
+    private ChatStatus leaveMessage = new LeaveChat();
 
     public ClientHandler(Socket s, ClientHandler[] threads) {
         this.s = s;
@@ -68,7 +69,7 @@ public class ClientHandler extends Thread {
                 for (int i = 0; i < clientCount; i++) {
                     if (threads[i] != null && threads[i] != this
                             && threads[i].username != null) {
-                        threads[i].dout.println(joinMessage.identify(name));
+                        threads[i].dout.println(leaveMessage.identify(name));
                     }
                 }
             }
