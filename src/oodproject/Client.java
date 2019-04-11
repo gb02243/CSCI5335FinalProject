@@ -140,18 +140,25 @@ public class Client {
         frame.setResizable(false);
         frame.setVisible(true);
 
-        // get server address from dialog
-        JFrame addressdialog = new JFrame("Server Information");
-        String server_address = JOptionPane.showInputDialog(addressdialog, "Enter the Server IP:");
+        boolean connected = false;
 
-        // connect to server
-        try {
-            observable.InitSocket(server_address, port);
-        } catch (Exception e) {
-            System.out.println("Cannot connect to " + server_address + ":" + port);
-            ((ClientGui) frame).chat_display.append("Cannot connect to " + server_address + ":" + port);
-            e.printStackTrace();
+        while(!connected){
+            // get IP from dialog
+            JFrame addressdialog = new JFrame("Server Information");
+            String server_address = JOptionPane.showInputDialog(addressdialog, "Enter the Server IP:", "127.0.0.1");
+
+            // connect to server
+            try {
+                observable.InitSocket(server_address, port);
+                connected = true;
+            } catch (Exception e) {
+                System.out.println("Cannot connect to " + server_address + ":" + port);
+                ((ClientGui) frame).chat_display.append("Cannot connect to " + server_address + ":" + port+"\n");
+                e.printStackTrace();
+                connected = false;
+            }
         }
+
 
         // get username from dialog
         JFrame userdialog = new JFrame("User Information");
