@@ -1,19 +1,18 @@
 package oodproject;
 
 import java.io.DataInputStream;
-import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
 
-public class ClientHandler extends Thread {
+class ClientHandler extends Thread {
     private String username = null;
     private DataInputStream din = null;
     private PrintStream dout = null;
     private Socket s = null;
     private final ClientHandler[] threads;
-    private int clientCount;
-    private ChatStatus joinMessage = new JoinChat();
-    private ChatStatus leaveMessage = new LeaveChat();
+    private final int clientCount;
+    private final ChatStatus joinMessage = new JoinChat();
+    private final ChatStatus leaveMessage = new LeaveChat();
 
     public ClientHandler(Socket s, ClientHandler[] threads) {
         this.s = s;

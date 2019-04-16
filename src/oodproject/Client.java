@@ -2,7 +2,7 @@ package oodproject;
 
 import javax.swing.*;
 
-public class Client {
+class Client {
     public static void main(String[] args) {
         int port = 1201;
         ClientObservable observable = new ClientObservable();

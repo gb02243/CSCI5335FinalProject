@@ -7,7 +7,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Observable;
 
-public class ClientObservable extends Observable {
+class ClientObservable extends Observable {
     private Socket s;
     private OutputStream dout;
 
@@ -18,7 +18,7 @@ public class ClientObservable extends Observable {
     }
 
     // create socket for observers
-    public void InitSocket(String server, int port) throws IOException {
+    void InitSocket(String server, int port) throws IOException {
         s = new Socket(server, port);
         dout = s.getOutputStream();
         Thread receivingThread = new Thread() {
@@ -41,7 +41,7 @@ public class ClientObservable extends Observable {
     private static final String CRLF = "\r\n";
 
     // send message
-    public void send(String text) {
+    void send(String text) {
         try {
             dout.write((text + CRLF).getBytes());
             dout.flush();
@@ -51,7 +51,7 @@ public class ClientObservable extends Observable {
     }
 
     // close socket
-    public void close() {
+    void close() {
         try {
             s.close();
         } catch (IOException ex) {

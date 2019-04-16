@@ -9,14 +9,14 @@ import java.awt.event.WindowEvent;
 import java.util.Observable;
 import java.util.Observer;
 
-public class ClientGui extends JFrame implements Observer {
+class ClientGui extends JFrame implements Observer {
     private JTextArea chat_display;
     private JTextField message_text;
     private JButton message_send;
     private static ClientObservable clientObservable;
 
     public ClientGui(ClientObservable clientObservable) {
-        this.clientObservable = clientObservable;
+        ClientGui.clientObservable = clientObservable;
         clientObservable.addObserver(this);
         build();
     }
@@ -74,7 +74,6 @@ public class ClientGui extends JFrame implements Observer {
     public static ClientObservable getClientObservable() {
         return clientObservable;
     }
-
 
     //return clientObservable
     public JTextArea getChat_display() {

@@ -4,7 +4,7 @@ import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Server {
+class Server {
     private static ServerSocket ss = null;
     private static Socket s = null;
 
