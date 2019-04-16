@@ -35,6 +35,9 @@ class ClientHandler extends Thread {
 
             dout.println("Connected as: " + name
                     + " type /exit to leave");
+
+            UserList.userNames.add(name);
+
             synchronized (this) {
                 for (int i = 0; i < clientCount; i++) {
                     username = name;
@@ -53,14 +56,23 @@ class ClientHandler extends Thread {
                 if (message.startsWith("/exit")) {
                     break;
                 }
-                synchronized (this) {
-                    for (int i = 0; i < clientCount; i++) {
-                        if (threads[i] != null && threads[i].username != null) {
-                            threads[i].dout.println("<" + name + ">: " + message);
+                // iterator
+                if (message.startsWith("/list")) {
+                    dout.println("\nConnected Users: ");
+                    for (java.util.Iterator<String> iter = UserList.userNames.iterator(); iter.hasNext(); ) {
+                        String userNameIter = (String) iter.next();
+                        dout.println("  - " + userNameIter);
+                    }
+                    dout.println();
+                } else {
+                    synchronized (this) {
+                        for (int i = 0; i < clientCount; i++) {
+                            if (threads[i] != null && threads[i].username != null) {
+                                threads[i].dout.println("<" + name + ">: " + message);
+                            }
                         }
                     }
                 }
-
             }
 
             // handle user leaving
@@ -78,6 +90,15 @@ class ClientHandler extends Thread {
                 for (int i = 0; i < clientCount; i++) {
                     if (threads[i] == this) {
                         threads[i] = null;
+                    }
+                }
+            }
+
+            // remove from UserList
+            synchronized (this) {
+                for (int j = 0; j < UserList.userNames.size(); j++) {
+                    if (UserList.userNames.get(j) == name) {
+                        UserList.userNames.remove(j);
                     }
                 }
             }
@@ -106,9 +127,18 @@ class ClientHandler extends Thread {
                     }
                 }
             }
+
+            // remove from UserList
+            synchronized (this) {
+                for (int j = 0; j < UserList.userNames.size(); j++) {
+                    if (UserList.userNames.get(j) == username) {
+                        UserList.userNames.remove(j);
+                    }
+                }
+            }
         }
         catch (Exception e) {
-            System.out.println("test");
+            e.printStackTrace();
         }
     }
 
