@@ -1,115 +1,111 @@
 package oodproject;
 
 import java.io.DataInputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
 
-class ClientHandler extends Thread {
-    private String username = null;
-    private DataInputStream din = null;
-    private PrintStream dout = null;
-    private Socket s = null;
-    private final ClientHandler[] threads;
-    private final int clientCount;
-    private final ChatStatus joinMessage = new JoinChat();
-    private final ChatStatus leaveMessage = new LeaveChat();
+public class ClientHandler extends Thread {
+	private String username = null;
+	private DataInputStream din = null;
+	private PrintStream dout = null;
+	private Socket s = null;
+	private final ClientHandler[] threads;
+	private int clientCount;
+	private ChatStatus joinMessage = new JoinChat();
+	private ChatStatus leaveMessage = new LeaveChat();
 
-    public ClientHandler(Socket s, ClientHandler[] threads) {
-        this.s = s;
-        this.threads = threads;
-        clientCount = threads.length;
-    }
+	public ClientHandler(Socket s, ClientHandler[] threads) {
+		this.s = s;
+		this.threads = threads;
+		clientCount = threads.length;
+	}
 
-    public void run() {
-        int clientCount = this.clientCount;
-        ClientHandler[] threads = this.threads;
+	public void run() {
+		int clientCount = this.clientCount;
+		ClientHandler[] threads = this.threads;
 
-        try {
-            din = new DataInputStream(s.getInputStream());
-            dout = new PrintStream(s.getOutputStream());
-            String name;
-            while (true) {
-                name = din.readLine().trim();
-                break;
-            }
+		try {
+			din = new DataInputStream(s.getInputStream());
+			dout = new PrintStream(s.getOutputStream());
+			String name;
+			while (true) {
+				name = din.readLine().trim();
+				break;
+			}
 
-            dout.println("Connected as: " + name
-                    + " type /exit to leave");
-            synchronized (this) {
-                for (int i = 0; i < clientCount; i++) {
-                    username = name;
-                    break;
-                }
-                for (int i = 0; i < clientCount; i++) {
-                    if (threads[i] != null && threads[i] != this) {
-                    	threads[i].dout.println(joinMessage.identify(name));
-                    }
-                }
-            }
+			dout.println("Connected as: " + name
+					+ " type /exit to leave");
+			UserList.userNames.add(name);
+			synchronized (this) {
+				for (int i = 0; i < clientCount; i++) {
+					username = "@" + name;
+					break;
+				}
+				for (int i = 0; i < clientCount; i++) {
+					if (threads[i] != null && threads[i] != this) {
+						threads[i].dout.println(joinMessage.identify(name));
+					}
+				}
+			}
 
-            // send messages
-            while (true) {
-                String message = din.readLine();
-                if (message.startsWith("/exit")) {
-                    break;
-                }
-                synchronized (this) {
-                    for (int i = 0; i < clientCount; i++) {
-                        if (threads[i] != null && threads[i].username != null) {
-                            threads[i].dout.println("<" + name + ">: " + message);
-                        }
-                    }
-                }
+			// send messages
+			while (true) {
+				String message = din.readLine();
+				if (message.startsWith("/exit")) {
+					break;
+				}
+				// TODO Figure out how to print only to one client*****
+				if (message.startsWith("/list")) {
+					//Iterator
+					dout.println("Connected Users: ");
+					for(java.util.Iterator<String> iter = UserList.userNames.iterator(); iter.hasNext();){
+						String userNameIter = (String)iter.next();
+						dout.println(userNameIter);
+					}
+				}
+				synchronized (this) {
+					for (int i = 0; i < clientCount; i++) {
+						if (threads[i] != null && threads[i].username != null) {
+							if (!(message.startsWith("/list"))) {
+								threads[i].dout.println("<" + name + ">: " + message);
+							}
+						}
+					}
+				}
 
-            }
+			}
 
-            // handle user leaving
-            synchronized (this) {
-                for (int i = 0; i < clientCount; i++) {
-                    if (threads[i] != null && threads[i] != this
-                            && threads[i].username != null) {
-                        threads[i].dout.println(leaveMessage.identify(name));
-                    }
-                }
-            }
+			// handle user leaving
+			synchronized (this) {
+				for (int i = 0; i < clientCount; i++) {
+					if (threads[i] != null && threads[i] != this
+							&& threads[i].username != null) {
+						threads[i].dout.println(leaveMessage.identify(name));
+					}
+				}
+			}
 
-            // allow new connections
-            synchronized (this) {
-                for (int i = 0; i < clientCount; i++) {
-                    if (threads[i] == this) {
-                        threads[i] = null;
-                    }
-                }
-            }
+			// allow new connections
+			synchronized (this) {
+				for (int i = 0; i < clientCount; i++) {
+					if (threads[i] == this) {
+						threads[i] = null;
+					}
+				}
+			}
 
-            // close streams and socket
-            din.close();
-            dout.close();
-            s.close();
-        }
-        catch (NullPointerException e){
-            // broadcast leave message
-            synchronized (this) {
-                for (int i = 0; i < clientCount; i++) {
-                    if (threads[i] != null && threads[i] != this
-                            && threads[i].username != null) {
-                        threads[i].dout.println(leaveMessage.identify(username));
-                    }
-                }
-            }
-
-            // allow new connections
-            synchronized (this) {
-                for (int i = 0; i < clientCount; i++) {
-                    if (threads[i] == this) {
-                        threads[i] = null;
-                    }
-                }
-            }
-        }
-        catch (Exception e) {
-            System.out.println("test");
-        }
-    }
+			// close streams and socket
+			for (int j = 0; j < UserList.userNames.size(); j++) {
+				if (UserList.userNames.get(j) == name) {
+					UserList.userNames.remove(j);
+				}
+			}
+			din.close();
+			dout.close();
+			s.close();
+		} catch (IOException e) {
+		}
+	}
 
 }
