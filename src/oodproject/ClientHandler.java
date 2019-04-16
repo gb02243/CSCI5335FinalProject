@@ -38,7 +38,7 @@ public class ClientHandler extends Thread {
                     + " type /exit to leave");
             synchronized (this) {
                 for (int i = 0; i < clientCount; i++) {
-                    username = "@" + name;
+                    username = name;
                     break;
                 }
                 for (int i = 0; i < clientCount; i++) {
@@ -87,7 +87,29 @@ public class ClientHandler extends Thread {
             din.close();
             dout.close();
             s.close();
-        } catch (IOException e) {
+        }
+        catch (NullPointerException e){
+            // broadcast leave message
+            synchronized (this) {
+                for (int i = 0; i < clientCount; i++) {
+                    if (threads[i] != null && threads[i] != this
+                            && threads[i].username != null) {
+                        threads[i].dout.println(leaveMessage.identify(username));
+                    }
+                }
+            }
+
+            // allow new connections
+            synchronized (this) {
+                for (int i = 0; i < clientCount; i++) {
+                    if (threads[i] == this) {
+                        threads[i] = null;
+                    }
+                }
+            }
+        }
+        catch (Exception e) {
+            System.out.println("test");
         }
     }
 
