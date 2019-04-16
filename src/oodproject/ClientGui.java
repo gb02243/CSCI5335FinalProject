@@ -66,6 +66,7 @@ class ClientGui extends JFrame implements Observer {
             public void run() {
                 chat_display.append(finalArg.toString());
                 chat_display.append("\n");
+                chat_display.setCaretPosition(chat_display.getDocument().getLength());
             }
         });
     }
