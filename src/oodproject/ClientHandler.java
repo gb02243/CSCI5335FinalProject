@@ -1,5 +1,6 @@
 package oodproject;
 
+import java.util.Date;
 import java.io.DataInputStream;
 import java.io.PrintStream;
 import java.net.Socket;
@@ -37,7 +38,8 @@ class ClientHandler extends Thread {
                     + " type /exit to leave");
 
             UserList.userNames.add(name);
-
+            ServerMediator.Update(new Date() + " " + name + " has joined");
+            
             synchronized (this) {
                 for (int i = 0; i < clientCount; i++) {
                     username = name;
