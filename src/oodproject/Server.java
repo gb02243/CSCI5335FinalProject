@@ -33,6 +33,7 @@ class Server {
         while (true) {
             try {
                 s = ss.accept();
+                ServerMediator.Update("User has connected.");
                 int i = 0;
                 for (i = 0; i < maxClients; i++) {
                     if (threads[i] == null) {

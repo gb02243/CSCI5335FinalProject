@@ -35,7 +35,7 @@ public class ServerGui extends JFrame {
         });
     }
 
-    private static void updateGui(String message) {
+    static void updateGui(String message) {
         chat_display.append(message);
         chat_display.append("\n");
     }
