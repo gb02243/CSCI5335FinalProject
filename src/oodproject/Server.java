@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Date;
 
 class Server {
     private static ServerSocket ss = null;
@@ -33,6 +34,7 @@ class Server {
         while (true) {
             try {
                 s = ss.accept();
+                ServerMediator.update("--[" + new Date() + "]-- User is attempting to connect");
                 int i = 0;
                 for (i = 0; i < maxClients; i++) {
                     if (threads[i] == null) {
