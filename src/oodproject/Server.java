@@ -1,5 +1,6 @@
 package oodproject;
 
+import javax.swing.*;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -12,33 +13,49 @@ class Server {
     private static final ClientHandler[] threads = new ClientHandler[maxClients];
 
     public static void main(String[] args) {
-        try{
+
+        // display gui
+        JFrame frame = new ServerGui();
+        frame.setTitle("Server");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setResizable(false);
+        frame.setVisible(true);
+
+        try {
             ss = new ServerSocket(1201);
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         //create a new socket & thread for each client
-        while(true){
-            try{
+        while (true) {
+            try {
                 s = ss.accept();
                 int i = 0;
                 for (i = 0; i < maxClients; i++) {
-                    if(threads[i] == null){
+                    if (threads[i] == null) {
                         (threads[i] = new ClientHandler(s, threads)).start();
                         break;
                     }
                 }
-                if(i == maxClients){
+                if (i == maxClients) {
                     PrintStream os = new PrintStream(s.getOutputStream());
-                    os.println(maxClients+" clients are already connected.");
+                    os.println(maxClients + " clients are already connected.");
                     os.close();
                     s.close();
                 }
-            }catch(Exception e){
+            } catch (Exception e) {
+                // TODO disconnect clients
                 e.printStackTrace();
+                System.exit(0);
             }
         }
+    }
+
+    public static ServerSocket getServer() {
+        return ss;
     }
 
 }

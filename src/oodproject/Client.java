@@ -7,6 +7,7 @@ class Client {
         int port = 1201;
         ClientObservable observable = new ClientObservable();
 
+        // display gui
         JFrame frame = new ClientGui(observable);
         frame.setTitle("Client");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -34,12 +35,9 @@ class Client {
             }
         }
 
-
         // get username from dialog
         JFrame userdialog = new JFrame("User Information");
         String uname = JOptionPane.showInputDialog(userdialog, "Enter your username:");
         ClientGui.getClientObservable().send(uname);
-
-
     }
 }
