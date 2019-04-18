@@ -38,7 +38,7 @@ class ClientHandler extends Thread {
                     + " type /exit to leave");
 
             UserList.userNames.add(name);
-            ServerMediator.Update(new Date() + " " + name + " has joined");
+            ServerMediator.Update(name + " has joined");
             
             synchronized (this) {
                 for (int i = 0; i < clientCount; i++) {
@@ -67,6 +67,7 @@ class ClientHandler extends Thread {
                     }
                     dout.println();
                 } else {
+                	ServerMediator.Update(message);
                     synchronized (this) {
                         for (int i = 0; i < clientCount; i++) {
                             if (threads[i] != null && threads[i].username != null) {
