@@ -67,7 +67,7 @@ class ClientHandler extends Thread {
                     }
                     dout.println();
                 } else {
-                    ServerMediator.Update(username + " " + message);
+                    ServerMediator.Update("<" + username + ">: " + message);
                     synchronized (this) {
                         for (int i = 0; i < clientCount; i++) {
                             if (threads[i] != null && threads[i].username != null) {
