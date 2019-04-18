@@ -34,7 +34,7 @@ class Server {
         while (true) {
             try {
                 s = ss.accept();
-                ServerMediator.update("--[" + new Date() + "]-- User is attempting to connect");
+                ServerMediator.Update("User is attempting to connect");
                 int i = 0;
                 for (i = 0; i < maxClients; i++) {
                     if (threads[i] == null) {
@@ -53,7 +53,7 @@ class Server {
                 e.printStackTrace();
                 System.exit(0);
             }
-        }
+        } 
     }
 
     public static ServerSocket getServer() {

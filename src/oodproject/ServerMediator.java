@@ -1,7 +1,10 @@
 package oodproject;
 
+import java.util.Date;
 public class ServerMediator {
-    public static void update(String message) {
-        ServerGui.updateGui(message);
+
+    public static void Update(String message) {
+        ServerGui.updateGui(new Date() + " " + message);
     }
 }
+ 
