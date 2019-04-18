@@ -39,7 +39,7 @@ class ClientHandler extends Thread {
 
             UserList.userNames.add(name);
             ServerMediator.Update(name + " has joined");
-            
+
             synchronized (this) {
                 for (int i = 0; i < clientCount; i++) {
                     username = name;
@@ -47,7 +47,7 @@ class ClientHandler extends Thread {
                 }
                 for (int i = 0; i < clientCount; i++) {
                     if (threads[i] != null && threads[i] != this) {
-                    	threads[i].dout.println(joinMessage.identify(name));
+                        threads[i].dout.println(joinMessage.identify(name));
                     }
                 }
             }
@@ -67,7 +67,7 @@ class ClientHandler extends Thread {
                     }
                     dout.println();
                 } else {
-                	ServerMediator.Update(message);
+                    ServerMediator.Update(username + " " + message);
                     synchronized (this) {
                         for (int i = 0; i < clientCount; i++) {
                             if (threads[i] != null && threads[i].username != null) {
@@ -110,8 +110,7 @@ class ClientHandler extends Thread {
             din.close();
             dout.close();
             s.close();
-        }
-        catch (NullPointerException e){
+        } catch (NullPointerException e) {
             // broadcast leave message
             synchronized (this) {
                 for (int i = 0; i < clientCount; i++) {
@@ -139,8 +138,7 @@ class ClientHandler extends Thread {
                     }
                 }
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
