@@ -26,6 +26,7 @@ class Server {
 
         try {
             ss = new ServerSocket(1201);
+            ServerMediator.Update("Server is running.");
         } catch (Exception e) {
             e.printStackTrace();
         }

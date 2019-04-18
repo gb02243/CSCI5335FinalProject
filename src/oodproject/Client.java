@@ -27,6 +27,7 @@ class Client {
             try {
                 observable.InitSocket(server_address, port);
                 connected = true;
+                frame.setTitle("Client - Connected");
             } catch (Exception e) {
                 System.out.println("Cannot connect to " + server_address + ":" + port);
                 ((ClientGui) frame).getChat_display().append("Cannot connect to " + server_address + ":" + port+"\n");
@@ -39,5 +40,6 @@ class Client {
         JFrame userdialog = new JFrame("User Information");
         String uname = JOptionPane.showInputDialog(userdialog, "Enter your username:");
         ClientGui.getClientObservable().send(uname);
+        frame.setTitle("Client - Connected - " + uname);
     }
 }

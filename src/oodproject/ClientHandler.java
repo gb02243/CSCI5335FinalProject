@@ -1,6 +1,5 @@
 package oodproject;
 
-import java.util.Date;
 import java.io.DataInputStream;
 import java.io.PrintStream;
 import java.net.Socket;
@@ -39,6 +38,7 @@ class ClientHandler extends Thread {
 
             UserList.userNames.add(name);
             ServerMediator.Update(name + " has joined");
+            ServerMediator.updateUsers(name);
 
             synchronized (this) {
                 for (int i = 0; i < clientCount; i++) {
@@ -79,7 +79,6 @@ class ClientHandler extends Thread {
             }
 
             // handle user leaving
-            ServerMediator.Update(username + " has exited the chat.");
             synchronized (this) {
                 for (int i = 0; i < clientCount; i++) {
                     if (threads[i] != null && threads[i] != this
@@ -106,6 +105,14 @@ class ClientHandler extends Thread {
                     }
                 }
             }
+
+            // update server gui
+            ServerMediator.Update(username + " has exited the chat.");
+            ServerMediator.clearUsers();
+            for (int i = 0; i < UserList.userNames.size(); i++) {
+                ServerMediator.updateUsers(UserList.userNames.get(i));
+            }
+
 
             // close streams and socket
             din.close();
