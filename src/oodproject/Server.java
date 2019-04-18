@@ -52,7 +52,7 @@ class Server {
                 e.printStackTrace();
                 System.exit(0);
             }
-        }
+        } 
     }
 
     public static ServerSocket getServer() {

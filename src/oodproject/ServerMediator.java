@@ -6,3 +6,4 @@ public class ServerMediator {
 		ServerGui.updateGui(message);
 	}
 }
+ 

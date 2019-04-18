@@ -31,7 +31,7 @@ public class ServerGui extends JFrame {
                     chat_display.append(ex.toString());
                     chat_display.append("\n");
                 }
-            }
+            } 
         });
     }
 
