@@ -79,6 +79,7 @@ class ClientHandler extends Thread {
             }
 
             // handle user leaving
+            ServerMediator.Update(username + " has exited the chat.");
             synchronized (this) {
                 for (int i = 0; i < clientCount; i++) {
                     if (threads[i] != null && threads[i] != this
