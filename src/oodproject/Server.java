@@ -49,7 +49,6 @@ class Server {
                     s.close();
                 }
             } catch (Exception e) {
-                // TODO disconnect clients
                 e.printStackTrace();
                 System.exit(0);
             }

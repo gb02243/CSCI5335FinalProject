@@ -46,7 +46,8 @@ class ClientObservable extends Observable {
             dout.write((text + CRLF).getBytes());
             dout.flush();
         } catch (IOException ex) {
-            notifyObservers(ex);
+            notifyObservers("--- Server has Disconnected ---");
+
         }
     }
 
