@@ -6,7 +6,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class ServerGui extends JFrame {
-    private JTextArea chat_display;
+    private static JTextArea chat_display;
 
     public ServerGui() {
         build();
@@ -33,5 +33,10 @@ public class ServerGui extends JFrame {
                 }
             }
         });
+    }
+
+    private static void updateGui(String message) {
+        chat_display.append(message);
+        chat_display.append("\n");
     }
 }
