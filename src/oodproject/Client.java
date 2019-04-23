@@ -7,18 +7,12 @@ class Client {
         int port = 1201;
         ClientObservable observable = new ClientObservable();
 
-        // display gui
-        JFrame frame = new ClientGui(observable);
-        frame.setTitle("Client");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setResizable(false);
-        frame.setVisible(true);
+        ClientGuiFacade frame = new ClientGuiFacade(observable);
+        frame.setWindow("Client");
 
         boolean connected = false;
 
-        while(!connected){
+        while (!connected) {
             // get IP from dialog
             JFrame addressdialog = new JFrame("Server Information");
             String server_address = JOptionPane.showInputDialog(addressdialog, "Enter the Server IP:", "127.0.0.1");
@@ -30,8 +24,7 @@ class Client {
                 frame.setTitle("Client - Connected");
             } catch (Exception e) {
                 System.out.println("Cannot connect to " + server_address + ":" + port);
-                ((ClientGui) frame).getChat_display().append("Cannot connect to " + server_address + ":" + port+"\n");
-                e.printStackTrace();
+                ((ClientGui) frame).getChat_display().append("Cannot connect to " + server_address + ":" + port + "\n");
                 connected = false;
             }
         }
